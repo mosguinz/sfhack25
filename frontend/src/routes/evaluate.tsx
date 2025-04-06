@@ -11,6 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
+
 import { useState } from "react"
 
 type EvaluationResults = {
@@ -118,8 +119,8 @@ function ImageEvaluation() {
         {/* Right Sidebar */}
         <VStack align="stretch" gap={6} mt={16}>
           <Box p={4} borderWidth="1px" rounded="xl" bg="white" boxShadow="sm">
-            <Heading 
-              size="md" 
+            <Heading
+              size="md"
               mb={2}
               color={allImagesUploaded ? "inherit" : "gray.400"}
               transition="color 0.2s ease-in-out"
@@ -246,16 +247,16 @@ function ImageUploadBox({
           boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
           _hover={{
             border: "1px solid",
-            borderColor: "brand.300"
+            borderColor: "brand.300",
           }}
         >
-          <Text 
-            position="absolute" 
-            top={2} 
-            left={2} 
-            bg="white" 
-            px={2} 
-            py={1} 
+          <Text
+            position="absolute"
+            top={2}
+            left={2}
+            bg="white"
+            px={2}
+            py={1}
             rounded="md"
             fontSize="sm"
             fontWeight="medium"
@@ -266,8 +267,8 @@ function ImageUploadBox({
           >
             {label}
           </Text>
-          <Box 
-            onClick={() => setIsPopupOpen(true)} 
+          <Box
+            onClick={() => setIsPopupOpen(true)}
             cursor="pointer"
             role="group"
           >
@@ -280,10 +281,10 @@ function ImageUploadBox({
                 left={0}
               />
             )}
-            <Image 
-              src={image} 
-              alt={label} 
-              w="full" 
+            <Image
+              src={image}
+              alt={label}
+              w="full"
               h="180px"
               objectFit="contain"
               bg="gray.50"
@@ -340,10 +341,15 @@ function ImageUploadBox({
                 >
                   ×
                 </Button>
-                <Box flex={1} display="flex" alignItems="center" justifyContent="center">
-                  <Image 
-                    src={image} 
-                    alt={label} 
+                <Box
+                  flex={1}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Image
+                    src={image}
+                    alt={label}
                     maxH="full"
                     maxW="full"
                     objectFit="contain"
@@ -368,14 +374,15 @@ function ImageUploadBox({
           border="1px solid"
           borderColor="gray.200"
           bg="white"
-          _hover={{ 
+          _hover={{
             bg: "brand.50",
             borderColor: "brand.300",
             transform: "scale(1.02)",
-            boxShadow: "0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06)"
+            boxShadow:
+              "0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06)",
           }}
         >
-          <Text 
+          <Text
             position="absolute"
             top={2}
             left={2}
@@ -391,10 +398,7 @@ function ImageUploadBox({
             onChange={handleUpload}
           />
           {isLoading ? (
-            <Skeleton
-              height="180px"
-              width="full"
-            />
+            <Skeleton height="180px" width="full" />
           ) : (
             <>
               <Text color="gray.400" fontSize="2xl">
