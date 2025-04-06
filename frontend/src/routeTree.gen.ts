@@ -15,12 +15,12 @@ import { Route as SignupImport } from './routes/signup'
 import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as LoginImport } from './routes/login'
-import { Route as Evaluate2Import } from './routes/evaluate2'
-import { Route as EvaluateImport } from './routes/evaluate'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
 import { Route as LayoutSettingsImport } from './routes/_layout/settings'
 import { Route as LayoutItemsImport } from './routes/_layout/items'
+import { Route as LayoutEvaluate2Import } from './routes/_layout/evaluate2'
+import { Route as LayoutEvaluateImport } from './routes/_layout/evaluate'
 import { Route as LayoutAdminImport } from './routes/_layout/admin'
 
 // Create/Update Routes
@@ -45,16 +45,6 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const Evaluate2Route = Evaluate2Import.update({
-  path: '/evaluate2',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const EvaluateRoute = EvaluateImport.update({
-  path: '/evaluate',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
   getParentRoute: () => rootRoute,
@@ -75,6 +65,16 @@ const LayoutItemsRoute = LayoutItemsImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutEvaluate2Route = LayoutEvaluate2Import.update({
+  path: '/evaluate2',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutEvaluateRoute = LayoutEvaluateImport.update({
+  path: '/evaluate',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutAdminRoute = LayoutAdminImport.update({
   path: '/admin',
   getParentRoute: () => LayoutRoute,
@@ -86,14 +86,6 @@ declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/_layout': {
       preLoaderRoute: typeof LayoutImport
-      parentRoute: typeof rootRoute
-    }
-    '/evaluate': {
-      preLoaderRoute: typeof EvaluateImport
-      parentRoute: typeof rootRoute
-    }
-    '/evaluate2': {
-      preLoaderRoute: typeof Evaluate2Import
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -116,6 +108,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAdminImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/evaluate': {
+      preLoaderRoute: typeof LayoutEvaluateImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/evaluate2': {
+      preLoaderRoute: typeof LayoutEvaluate2Import
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/items': {
       preLoaderRoute: typeof LayoutItemsImport
       parentRoute: typeof LayoutImport
@@ -136,12 +136,12 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   LayoutRoute.addChildren([
     LayoutAdminRoute,
+    LayoutEvaluateRoute,
+    LayoutEvaluate2Route,
     LayoutItemsRoute,
     LayoutSettingsRoute,
     LayoutIndexRoute,
   ]),
-  EvaluateRoute,
-  Evaluate2Route,
   LoginRoute,
   RecoverPasswordRoute,
   ResetPasswordRoute,

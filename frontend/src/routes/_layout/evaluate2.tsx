@@ -20,7 +20,7 @@ type EvaluationResults = {
   // recommendations: string
 }
 
-export const Route = createFileRoute("/evaluate2")({
+export const Route = createFileRoute("/_layout/evaluate2")({
   component: ImageEvaluation,
   beforeLoad: async () => {
     // TODO: handle unauthorized here
