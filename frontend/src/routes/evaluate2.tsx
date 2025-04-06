@@ -1,3 +1,4 @@
+import { ClassificationService } from "@/client"
 import {
   Box,
   Button,
@@ -10,9 +11,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import { createFileRoute, Link as RouterLink } from "@tanstack/react-router"
+import { Link as RouterLink, createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
-import { ClassificationService } from "@/client" 
 
 type EvaluationResults = {
   diagnosis: string
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/evaluate2")({
 
 function ImageEvaluation() {
   const [image, setImage] = useState<string | null>(null)
-  const [storeImages, setStoreImages] = useState<File | null>(null);
+  const [storeImages, setStoreImages] = useState<File | null>(null)
   const [isEvaluating, setIsEvaluating] = useState(false)
   const [results, setResults] = useState<EvaluationResults | null>(null)
   // const [results, setResults] = useState<EvaluationResults[]>([]);
@@ -58,8 +58,10 @@ function ImageEvaluation() {
     setResults(null)
 
     if (storeImages) {
-      const result = await ClassificationService.classifyChestImage({ formData: { file: storeImages } });
-      console.log(result);
+      const result = await ClassificationService.classifyChestImage({
+        formData: { file: storeImages },
+      })
+      console.log(result)
       console.log(storeImages)
 
       setResults({
@@ -67,20 +69,18 @@ function ImageEvaluation() {
         confidence: result.confidence,
         // recommendations: "Regular follow-up recommended",
       })
-
     }
 
     setTimeout(() => {
-    //   setResults({
-    //     diagnosis: "Normal",
-    //     confidence: 0.95,
-    //     // recommendations: "Regular follow-up recommended",
-    //   })
-    //   setIsEvaluating(false)
+      //   setResults({
+      //     diagnosis: "Normal",
+      //     confidence: 0.95,
+      //     // recommendations: "Regular follow-up recommended",
+      //   })
+      //   setIsEvaluating(false)
     }, 2500)
 
     setIsEvaluating(false)
-
   }
 
   return (
@@ -262,32 +262,6 @@ function ImageUploadBox({
                 right={0}
                 bottom={0}
               />
-            )}
-            {isAnalyzing && (
-              <>
-                <Box
-                  position="absolute"
-                  left={0}
-                  right={0}
-                  height="2px"
-                  bg="red.500"
-                  boxShadow="0 0 10px rgba(255, 0, 0, 0.5)"
-                  style={{
-                    animation: "scanVertical 1.25s linear infinite alternate",
-                  }}
-                />
-                <Box
-                  position="absolute"
-                  top={0}
-                  bottom={0}
-                  width="2px"
-                  bg="red.500"
-                  boxShadow="0 0 10px rgba(255, 0, 0, 0.5)"
-                  style={{
-                    animation: "scanHorizontal 1.25s linear infinite alternate",
-                  }}
-                />
-              </>
             )}
           </Box>
           <Button
