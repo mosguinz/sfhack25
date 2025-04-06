@@ -44,6 +44,7 @@ function ImageEvaluation() {
     if (file) {
       const x = await ClassificationService.classifyImage( {formData: {file:file}} )
       console.log(x)
+      // console.log(file)
       
       setStoreImages(prevImages => {
         const newImages = [...prevImages];  // Copy the previous state
@@ -72,10 +73,20 @@ function ImageEvaluation() {
     // setResults(null)
     setResults([])
     // console.log(images)
-    {storeImages.map((images) => (
-      // console.log(images)
-      console.log( ClassificationService.classifyImage( {formData: {file:images}} ) )
-    ))}
+    // const test = await ClassificationService.classifyImage( {formData: {file: storeImages[0]}} )
+    // console.log(test)
+
+    // {storeImages.map((images) => (
+    //   // console.log(images)
+    //   console.log( await ClassificationService.classifyImage( {formData: {file: storeImages[index]}} ) )
+    // ))}
+
+    const evaluationResults = [];
+    for (const file of storeImages) {
+      const result = await ClassificationService.classifyImage({ formData: { file } });
+      console.log(result);
+      evaluationResults.push(result); // Store the result
+    }
 
     setTimeout(() => {
       setResults([{
@@ -138,7 +149,7 @@ function ImageEvaluation() {
                   colorScheme="brand"
                   onClick={() => {
                     setImages(Array(4).fill(null))
-                    setResults(null)
+                    setResults([])
                   }}
                   w="200px"
                 >
