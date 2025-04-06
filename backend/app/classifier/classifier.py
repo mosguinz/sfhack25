@@ -10,7 +10,7 @@ from app.classifier.cnn import CNN
 CLASSIFICATIONS = {0: "No tumor", 1: "Benign", 2: "Malignant"}
 
 model = CNN()
-model.load_state_dict(torch.load("app/classifier/BREAST_CANCER_BEST.pth"))
+model.load_state_dict(torch.load("app/classifier/BREAST_CANCER_BEST.pth",  map_location=torch.device("cpu")))
 
 data_transforms = transforms.Compose(
     [

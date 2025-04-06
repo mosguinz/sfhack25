@@ -19,7 +19,6 @@ async def classify_image(file: UploadFile = File(...)) -> Any:
         raise HTTPException(status_code=400, detail="File must be an image")
 
     try:
-        # Read image bytes
         image_bytes = await file.read()
         image = Image.open(io.BytesIO(image_bytes))
 
