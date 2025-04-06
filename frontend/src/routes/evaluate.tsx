@@ -71,40 +71,42 @@ function ImageEvaluation() {
       <Grid templateColumns={{ base: "1fr", lg: "2fr 1fr" }} gap={8}>
         {/* Main Upload Section */}
         <Box>
-          <Heading size="lg" mb={4}>
+          <Heading size="3xl" mb={4}>
             Mammography Analyzer
           </Heading>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-            <ImageUploadColumn
-              title="Left"
-              mloIndex={0}
-              ccIndex={2}
-              images={images}
-              onUpload={handleImageUpload}
-              onRemove={removeImage}
-            />
-            <ImageUploadColumn
-              title="Right"
-              mloIndex={1}
-              ccIndex={3}
-              images={images}
-              onUpload={handleImageUpload}
-              onRemove={removeImage}
-            />
-          </SimpleGrid>
+          <Box mt={12}>
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={12}>
+              <ImageUploadColumn
+                title="Left"
+                mloIndex={0}
+                ccIndex={2}
+                images={images}
+                onUpload={handleImageUpload}
+                onRemove={removeImage}
+              />
+              <ImageUploadColumn
+                title="Right"
+                mloIndex={1}
+                ccIndex={3}
+                images={images}
+                onUpload={handleImageUpload}
+                onRemove={removeImage}
+              />
+            </SimpleGrid>
+          </Box>
         </Box>
 
         {/* Right Sidebar */}
-        <VStack align="stretch" spacing={6}>
+        <VStack align="stretch" gap={6} mt={16}>
           <Box p={4} borderWidth="1px" rounded="xl" bg="white" boxShadow="sm">
             <Heading size="md" mb={2}>
               Ready to analyze
             </Heading>
             <Button
-              colorPalette="brand"
+              colorScheme="brand"
               onClick={handleEvaluate}
-              isLoading={isEvaluating}
-              isDisabled={!allImagesUploaded}
+              loading={isEvaluating}
+              disabled={!allImagesUploaded}
               w="full"
             >
               Analyze
@@ -158,10 +160,10 @@ function ImageUploadColumn({
 }) {
   return (
     <Box>
-      <Heading size="md" mb={4} color="brand.700">
+      <Heading size="xl" mb={4} color="brand.700">
         {title}
       </Heading>
-      <VStack align="stretch" spacing={4}>
+      <VStack align="stretch" gap={8}>
         <ImageUploadBox
           label={`${title} Mediolateral Oblique (MLO)`}
           index={mloIndex}
@@ -196,9 +198,6 @@ function ImageUploadBox({
 }) {
   return (
     <Box>
-      <Text mb={2} fontWeight="medium">
-        {label}
-      </Text>
       {image ? (
         <Box
           position="relative"
@@ -206,7 +205,27 @@ function ImageUploadBox({
           borderColor="gray.200"
           rounded="md"
           overflow="hidden"
+          transition="all 0.2s"
+          _hover={{
+            borderColor: "brand.300",
+            boxShadow: "0 0 0 2px var(--chakra-colors-brand-100)",
+            transform: "scale(1.01)"
+          }}
         >
+          <Text 
+            position="absolute" 
+            top={2} 
+            left={2} 
+            bg="white" 
+            px={2} 
+            py={1} 
+            rounded="md"
+            fontSize="sm"
+            fontWeight="medium"
+            zIndex={1}
+          >
+            {label}
+          </Text>
           <Image src={image} alt={label} w="full" />
           <Button
             position="absolute"
@@ -225,13 +244,30 @@ function ImageUploadBox({
           border="2px dashed"
           borderColor="brand.200"
           rounded="xl"
-          h="150px"
+          h="180px"
           cursor="pointer"
           display="flex"
+          flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          _hover={{ bg: "brand.50" }}
+          transition="all 0.2s"
+          _hover={{ 
+            bg: "brand.50",
+            borderColor: "brand.300",
+            boxShadow: "0 0 0 2px var(--chakra-colors-brand-100)",
+            transform: "scale(1.01)"
+          }}
+          position="relative"
         >
+          <Text 
+            position="absolute"
+            top={2}
+            left={2}
+            fontSize="sm"
+            fontWeight="medium"
+          >
+            {label}
+          </Text>
           <Input
             type="file"
             accept="image/*"
