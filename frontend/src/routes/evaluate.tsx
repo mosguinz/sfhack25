@@ -62,7 +62,7 @@ function ImageEvaluation() {
         recommendations: "Regular follow-up recommended",
       })
       setIsEvaluating(false)
-    }, 2000)
+    }, 2500)
   }
 
   const allImagesUploaded = images.every((img) => img !== null)
@@ -101,7 +101,12 @@ function ImageEvaluation() {
         {/* Right Sidebar */}
         <VStack align="stretch" gap={6} mt={16}>
           <Box p={4} borderWidth="1px" rounded="xl" bg="white" boxShadow="sm">
-            <Heading size="md" mb={2}>
+            <Heading 
+              size="md" 
+              mb={2}
+              color={allImagesUploaded ? "inherit" : "gray.400"}
+              transition="color 0.2s ease-in-out"
+            >
               Ready to analyze
             </Heading>
             <Button
