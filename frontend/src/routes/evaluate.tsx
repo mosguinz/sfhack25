@@ -55,6 +55,7 @@ function ImageEvaluation() {
 
   const handleEvaluate = async () => {
     setIsEvaluating(true)
+    setResults(null)
     setTimeout(() => {
       setResults({
         diagnosis: "Normal",
@@ -75,8 +76,8 @@ function ImageEvaluation() {
           <Heading size="3xl" mb={4}>
             Mammography Analyzer
           </Heading>
-          <Box h="1px" bg="gray.200" mb={8} />
-          <Box mt={12}>
+          <Box h="1px" bg="gray.200" mb={4} />
+          <Box mt={2}>
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={12}>
               <ImageUploadColumn
                 title="Left"
@@ -95,6 +96,20 @@ function ImageEvaluation() {
                 onRemove={removeImage}
               />
             </SimpleGrid>
+            {allImagesUploaded && (
+              <Box display="flex" justifyContent="center" mt={8}>
+                <Button
+                  colorScheme="brand"
+                  onClick={() => {
+                    setImages(Array(4).fill(null))
+                    setResults(null)
+                  }}
+                  w="200px"
+                >
+                  Clear All Images
+                </Button>
+              </Box>
+            )}
           </Box>
         </Box>
 
@@ -127,7 +142,7 @@ function ImageEvaluation() {
             <Text color="gray.500">[Form or metadata goes here]</Text>
           </Box>
 
-          {results && (
+          {results && allImagesUploaded && (
             <Box p={4} borderWidth="1px" rounded="xl" bg="white" boxShadow="sm">
               <Heading size="md" mb={2}>
                 Analysis Results
@@ -167,10 +182,10 @@ function ImageUploadColumn({
 }) {
   return (
     <Box>
-      <Heading size="xl" mb={4} color="brand.700">
+      <Heading size="xl" mb={2} color="brand.700">
         {title}
       </Heading>
-      <VStack align="stretch" gap={8}>
+      <VStack align="stretch" gap={4}>
         <ImageUploadBox
           label={`${title} Mediolateral Oblique (MLO)`}
           index={mloIndex}
