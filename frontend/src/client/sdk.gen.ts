@@ -4,8 +4,10 @@ import type { CancelablePromise } from "./core/CancelablePromise"
 import { OpenAPI } from "./core/OpenAPI"
 import { request as __request } from "./core/request"
 import type {
-  ClassificationClassifyImageData,
-  ClassificationClassifyImageResponse,
+  ClassificationClassifyBreastImageData,
+  ClassificationClassifyBreastImageResponse,
+  ClassificationClassifyChestImageData,
+  ClassificationClassifyChestImageResponse,
   ItemsReadItemsData,
   ItemsReadItemsResponse,
   ItemsCreateItemData,
@@ -52,19 +54,41 @@ import type {
 
 export class ClassificationService {
   /**
-   * Classify Image
+   * Classify Breast Image
    * Upload an image to classify breast cancer type.
    * @param data The data for the request.
    * @param data.formData
    * @returns ClassificationResult Successful Response
    * @throws ApiError
    */
-  public static classifyImage(
-    data: ClassificationClassifyImageData,
-  ): CancelablePromise<ClassificationClassifyImageResponse> {
+  public static classifyBreastImage(
+    data: ClassificationClassifyBreastImageData,
+  ): CancelablePromise<ClassificationClassifyBreastImageResponse> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/v1/classify/",
+      url: "/api/v1/classify/breast",
+      formData: data.formData,
+      mediaType: "multipart/form-data",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Classify Chest Image
+   * Upload an image to classify chest condition.
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns ClassificationResult Successful Response
+   * @throws ApiError
+   */
+  public static classifyChestImage(
+    data: ClassificationClassifyChestImageData,
+  ): CancelablePromise<ClassificationClassifyChestImageResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/classify/chest",
       formData: data.formData,
       mediaType: "multipart/form-data",
       errors: {
