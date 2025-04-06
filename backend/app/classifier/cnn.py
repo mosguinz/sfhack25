@@ -5,7 +5,10 @@ import torchvision.models as models
 
 
 class CNN(nn.Module):
-    def __init__(self):
+    def __init__(self, classes: int):
+        """
+        classes: number of classes
+        """
         super().__init__()
         # Load pretrained EfficientNetB0
         self.base_model = models.efficientnet_b0(pretrained=True)
@@ -27,7 +30,7 @@ class CNN(nn.Module):
         self.bn2 = nn.BatchNorm1d(256)
         self.dropout2 = nn.Dropout(0.3)
 
-        self.output_layer = nn.Linear(256, 3)
+        self.output_layer = nn.Linear(256, classes)
 
     def forward(self, x):
         x = self.base_model.features(x)  # EfficientNet features

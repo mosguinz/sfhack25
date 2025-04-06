@@ -1,8 +1,6 @@
-import io
 from typing import Any
 
-from fastapi import APIRouter, File, HTTPException, UploadFile
-from PIL import Image
+from fastapi import APIRouter, HTTPException, UploadFile
 
 from app.classifier.classifier import classify
 from app.models import ClassificationResult
@@ -10,22 +8,39 @@ from app.models import ClassificationResult
 router = APIRouter(prefix="/classify", tags=["classification"])
 
 
-@router.post("/", response_model=ClassificationResult)
-async def classify_image(file: UploadFile) -> Any:
+@router.post("/breast", response_model=ClassificationResult)
+async def classify_breast_image(file: UploadFile) -> Any:
     """
     Upload an image to classify breast cancer type.
     """
-    print(file)
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="File must be an image")
 
     try:
         image_bytes = await file.read()
-        diagnosis, confidence = classify(image_bytes)
-        result = ClassificationResult(diagnosis=diagnosis, confidence=confidence)
-        return result
+        diagnosis, confidence = classify(image_bytes, "breast")
+        return ClassificationResult(diagnosis=diagnosis, confidence=confidence)
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Image processing failed: {str(e)}"
+            status_code=500, detail=f"Breast image processing failed: {str(e)}"
+        )
+
+
+@router.post("/chest", response_model=ClassificationResult)
+async def classify_chest_image(file: UploadFile) -> Any:
+    """
+    Upload an image to classify chest condition.
+    """
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="File must be an image")
+
+    try:
+        image_bytes = await file.read()
+        diagnosis, confidence = classify(image_bytes, "chest")
+        return ClassificationResult(diagnosis=diagnosis, confidence=confidence)
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Chest image processing failed: {str(e)}"
         )
