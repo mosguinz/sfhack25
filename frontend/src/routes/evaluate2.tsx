@@ -78,6 +78,7 @@ function ImageEvaluation() {
               onRemove={removeImage}
               mt={4}
               h="400px"
+              isAnalyzing={isEvaluating}
             />
           </Box>
         </Box>
@@ -141,6 +142,7 @@ function ImageUploadBox({
   onRemove,
   mt,
   h,
+  isAnalyzing,
 }: {
   label: string
   image: string | null
@@ -148,6 +150,7 @@ function ImageUploadBox({
   onRemove: () => void
   mt?: number
   h?: string
+  isAnalyzing?: boolean
 }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
@@ -165,6 +168,18 @@ function ImageUploadBox({
 
   return (
     <Box>
+      <style>
+        {`
+          @keyframes scanVertical {
+            from { top: 0; }
+            to { top: 100%; }
+          }
+          @keyframes scanHorizontal {
+            from { left: 0; }
+            to { left: 100%; }
+          }
+        `}
+      </style>
       {image ? (
         <Box
           position="relative"
@@ -172,6 +187,8 @@ function ImageUploadBox({
           overflow="hidden"
           transition="all 0.2s"
           boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
+          border="1px solid"
+          borderColor={isAnalyzing ? "black" : "transparent"}
           _hover={{
             border: "1px solid",
             borderColor: "brand.300"
@@ -192,12 +209,12 @@ function ImageUploadBox({
           >
             {label}
           </Text>
-          <Box position="relative" h={h || "180px"}>
+          <Box position="relative" h={h || "180px"} display="flex" alignItems="center" justifyContent="center">
             <Image
               src={image}
               alt={label}
               w="full"
-              h="180px"
+              h={h}
               objectFit="contain"
               bg="gray.50"
               onLoad={handleImageLoad}
@@ -212,6 +229,32 @@ function ImageUploadBox({
                 right={0}
                 bottom={0}
               />
+            )}
+            {isAnalyzing && (
+              <>
+                <Box
+                  position="absolute"
+                  left={0}
+                  right={0}
+                  height="2px"
+                  bg="red.500"
+                  boxShadow="0 0 10px rgba(255, 0, 0, 0.5)"
+                  style={{
+                    animation: "scanVertical 1.25s linear infinite alternate"
+                  }}
+                />
+                <Box
+                  position="absolute"
+                  top={0}
+                  bottom={0}
+                  width="2px"
+                  bg="red.500"
+                  boxShadow="0 0 10px rgba(255, 0, 0, 0.5)"
+                  style={{
+                    animation: "scanHorizontal 1.25s linear infinite alternate"
+                  }}
+                />
+              </>
             )}
           </Box>
           <Button
