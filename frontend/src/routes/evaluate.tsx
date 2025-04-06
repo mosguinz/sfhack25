@@ -17,7 +17,7 @@ import {ClassificationService} from "@/client"
 type EvaluationResults = {
   diagnosis: string
   confidence: number
-  recommendations: string
+  // recommendations: string
 }
 
 export const Route = createFileRoute("/evaluate")({
@@ -80,37 +80,27 @@ function ImageEvaluation() {
     //   // console.log(images)
     //   console.log( await ClassificationService.classifyImage( {formData: {file: storeImages[index]}} ) )
     // ))}
+///////
+    const evaluationResults: EvaluationResults[] = []; // Make sure the type is correct
 
-    const evaluationResults = [];
+    // Loop over storeImages and classify each one
     for (const file of storeImages) {
       const result = await ClassificationService.classifyImage({ formData: { file } });
-      console.log(result);
-      evaluationResults.push(result); // Store the result
+
+      // Assuming `result` matches the shape of `EvaluationResults`
+      const formattedResult: EvaluationResults = {
+        diagnosis: result.diagnosis || "Normal", // Add defaults if necessary
+        confidence: result.confidence || 0.95,
+        // recommendations: result.recommendations || "Regular follow-up recommended",
+      };
+
+      evaluationResults.push(formattedResult); // Add the formatted result
     }
 
-    setTimeout(() => {
-      setResults([{
-        diagnosis: "Normal",
-        confidence: 0.95,
-        recommendations: "Regular follow-up recommended",
-      },
-      {
-        diagnosis: "Chest Cancer",
-        confidence: 0.85,
-        recommendations: "Regular follow-up recommended",
-      },
-      {
-        diagnosis: "Breast Cancer",
-        confidence: 0.75,
-        recommendations: "Regular follow-up recommended",
-      },
-      {
-        diagnosis: "Eye Cancer",
-        confidence: 0.65,
-        recommendations: "Regular follow-up recommended",
-      }])
-      setIsEvaluating(false)
-    }, 2500)
+    // Update the `results` state with the populated evaluationResults
+    setResults(evaluationResults);
+////////
+    setIsEvaluating(false)
   }
 
   const allImagesUploaded = images.every((img) => img !== null)
@@ -197,13 +187,16 @@ function ImageEvaluation() {
               {results.map((result, index) => (
                 <Box key={index} mb={4}>
                   <Text>
+                    <strong>Xray Scan:</strong>{index}
+                  </Text>
+                  <Text>
                     <strong>Diagnosis:</strong> {result.diagnosis}
                   </Text>
                   <Text>
                     <strong>Confidence:</strong> {(result.confidence * 100).toFixed(2)}%
                   </Text>
                   <Text>
-                    <strong>Recommendations:</strong> {result.recommendations}
+                    {/* <strong>Recommendations:</strong> {result.recommendations} */}
                   </Text>
                 </Box>
             ))}
