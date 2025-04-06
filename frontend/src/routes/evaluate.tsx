@@ -1,12 +1,12 @@
 import {
   Box,
   Button,
-  Divider,
   Grid,
   Heading,
   Image,
   Input,
   SimpleGrid,
+  Skeleton,
   Text,
   VStack,
 } from "@chakra-ui/react"
@@ -198,6 +198,21 @@ function ImageUploadBox({
   onUpload: (e: React.ChangeEvent<HTMLInputElement>, i: number) => void
   onRemove: (i: number) => void
 }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true)
+    setIsImageLoaded(false)
+    onUpload(e, index)
+  }
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true)
+    setIsLoading(false)
+  }
+
   return (
     <Box>
       {image ? (
@@ -208,8 +223,6 @@ function ImageUploadBox({
           transition="all 0.2s"
           boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
           _hover={{
-            boxShadow: "0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06)",
-            transform: "scale(1.02)",
             border: "1px solid",
             borderColor: "brand.300"
           }}
@@ -225,17 +238,38 @@ function ImageUploadBox({
             fontSize="sm"
             fontWeight="medium"
             zIndex={1}
+            transition="opacity 0.2s ease-in-out"
+            opacity={1}
+            _groupHover={{ opacity: 0 }}
           >
             {label}
           </Text>
-          <Image 
-            src={image} 
-            alt={label} 
-            w="full" 
-            h="180px"
-            objectFit="contain"
-            bg="gray.50"
-          />
+          <Box 
+            onClick={() => setIsPopupOpen(true)} 
+            cursor="pointer"
+            role="group"
+          >
+            {isLoading && (
+              <Skeleton
+                height="180px"
+                width="full"
+                position="absolute"
+                top={0}
+                left={0}
+              />
+            )}
+            <Image 
+              src={image} 
+              alt={label} 
+              w="full" 
+              h="180px"
+              objectFit="contain"
+              bg="gray.50"
+              opacity={isImageLoaded ? 1 : 0}
+              transition="opacity 0.3s ease-in-out"
+              onLoad={handleImageLoad}
+            />
+          </Box>
           <Button
             position="absolute"
             top={1}
@@ -246,6 +280,56 @@ function ImageUploadBox({
           >
             ×
           </Button>
+
+          {isPopupOpen && (
+            <Box
+              position="fixed"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              bg="blackAlpha.600"
+              zIndex={999}
+              onClick={() => setIsPopupOpen(false)}
+              backdropFilter="blur(4px)"
+            >
+              <Box
+                position="absolute"
+                top="50%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+                bg="white"
+                p={6}
+                rounded="xl"
+                boxShadow="2xl"
+                zIndex={1000}
+                w="800px"
+                h="600px"
+                display="flex"
+                flexDirection="column"
+              >
+                <Button
+                  position="absolute"
+                  top={2}
+                  right={2}
+                  size="sm"
+                  onClick={() => setIsPopupOpen(false)}
+                  colorScheme="gray"
+                >
+                  ×
+                </Button>
+                <Box flex={1} display="flex" alignItems="center" justifyContent="center">
+                  <Image 
+                    src={image} 
+                    alt={label} 
+                    maxH="full"
+                    maxW="full"
+                    objectFit="contain"
+                  />
+                </Box>
+              </Box>
+            </Box>
+          )}
         </Box>
       ) : (
         <Box
@@ -282,14 +366,23 @@ function ImageUploadBox({
             type="file"
             accept="image/*"
             display="none"
-            onChange={(e) => onUpload(e, index)}
+            onChange={handleUpload}
           />
-          <Text color="gray.400" fontSize="2xl">
-            +
-          </Text>
-          <Text color="gray.500" fontSize="sm" mt={2}>
-            Click to upload mammography image
-          </Text>
+          {isLoading ? (
+            <Skeleton
+              height="180px"
+              width="full"
+            />
+          ) : (
+            <>
+              <Text color="gray.400" fontSize="2xl">
+                +
+              </Text>
+              <Text color="gray.500" fontSize="sm" mt={2}>
+                Click to upload mammography image
+              </Text>
+            </>
+          )}
         </Box>
       )}
     </Box>
