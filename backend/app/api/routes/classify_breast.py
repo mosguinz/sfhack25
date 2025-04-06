@@ -11,18 +11,17 @@ router = APIRouter(prefix="/classify", tags=["classification"])
 
 
 @router.post("/", response_model=ClassificationResult)
-async def classify_image(file: UploadFile = File(...)) -> Any:
+async def classify_image(file: UploadFile) -> Any:
     """
     Upload an image to classify breast cancer type.
     """
+    print(file)
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="File must be an image")
 
     try:
         image_bytes = await file.read()
-        image = Image.open(io.BytesIO(image_bytes))
-
-        diagnosis, confidence = classify(image)
+        diagnosis, confidence = classify(image_bytes)
         result = ClassificationResult(diagnosis=diagnosis, confidence=confidence)
         return result
 

@@ -30,7 +30,7 @@ def interpret_prediction(tensor: torch.Tensor) -> tuple[str, float]:
 
 def classify(img_bytes: BytesIO) -> tuple[str, float]:
     """Classify cancer from give image bytes."""
-    image = Image.open(img_bytes).convert("RGB")
+    image = Image.open(BytesIO(img_bytes)).convert("RGB")
     image = data_transforms(image)
     image = image.unsqueeze(0)
     model.eval()
