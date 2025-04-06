@@ -37,6 +37,7 @@ function ImageEvaluation() {
   ) => {
     const file = e.target.files?.[0]
     if (file) {
+      setResults(null)
       const reader = new FileReader()
       reader.onloadend = () => {
         const newImages = [...images]
@@ -51,6 +52,7 @@ function ImageEvaluation() {
     const newImages = [...images]
     newImages[index] = null
     setImages(newImages)
+    setResults(null)
   }
 
   const handleEvaluate = async () => {
