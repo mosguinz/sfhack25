@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Divider,
   Grid,
   Heading,
   Image,
@@ -74,6 +75,7 @@ function ImageEvaluation() {
           <Heading size="3xl" mb={4}>
             Mammography Analyzer
           </Heading>
+          <Box h="1px" bg="gray.200" mb={8} />
           <Box mt={12}>
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={12}>
               <ImageUploadColumn
@@ -201,15 +203,15 @@ function ImageUploadBox({
       {image ? (
         <Box
           position="relative"
-          border="1px solid"
-          borderColor="gray.200"
-          rounded="md"
+          rounded="xl"
           overflow="hidden"
           transition="all 0.2s"
+          boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
           _hover={{
-            borderColor: "brand.300",
-            boxShadow: "0 0 0 2px var(--chakra-colors-brand-100)",
-            transform: "scale(1.01)"
+            boxShadow: "0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06)",
+            transform: "scale(1.02)",
+            border: "1px solid",
+            borderColor: "brand.300"
           }}
         >
           <Text 
@@ -226,7 +228,14 @@ function ImageUploadBox({
           >
             {label}
           </Text>
-          <Image src={image} alt={label} w="full" />
+          <Image 
+            src={image} 
+            alt={label} 
+            w="full" 
+            h="180px"
+            objectFit="contain"
+            bg="gray.50"
+          />
           <Button
             position="absolute"
             top={1}
@@ -241,8 +250,7 @@ function ImageUploadBox({
       ) : (
         <Box
           as="label"
-          border="2px dashed"
-          borderColor="brand.200"
+          position="relative"
           rounded="xl"
           h="180px"
           cursor="pointer"
@@ -251,13 +259,15 @@ function ImageUploadBox({
           alignItems="center"
           justifyContent="center"
           transition="all 0.2s"
+          border="1px solid"
+          borderColor="gray.200"
+          bg="white"
           _hover={{ 
             bg: "brand.50",
             borderColor: "brand.300",
-            boxShadow: "0 0 0 2px var(--chakra-colors-brand-100)",
-            transform: "scale(1.01)"
+            transform: "scale(1.02)",
+            boxShadow: "0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06)"
           }}
-          position="relative"
         >
           <Text 
             position="absolute"
@@ -276,6 +286,9 @@ function ImageUploadBox({
           />
           <Text color="gray.400" fontSize="2xl">
             +
+          </Text>
+          <Text color="gray.500" fontSize="sm" mt={2}>
+            Click to upload mammography image
           </Text>
         </Box>
       )}
