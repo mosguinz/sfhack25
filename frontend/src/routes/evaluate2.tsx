@@ -5,7 +5,7 @@ import {
   Heading,
   Image,
   Input,
-  SimpleGrid,
+  // SimpleGrid,
   Skeleton,
   Text,
   VStack,
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/evaluate2")({
 
 function ImageEvaluation() {
   const [image, setImage] = useState<string | null>(null)
-  const [storeImages, setStoreImages] = useState<File>();
+  // const [storeImages, setStoreImages] = useState<File>()
   const [isEvaluating, setIsEvaluating] = useState(false)
   const [results, setResults] = useState<EvaluationResults | null>(null)
   // const [results, setResults] = useState<EvaluationResults[]>([]);
@@ -36,8 +36,7 @@ function ImageEvaluation() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-
-      setStoreImages(file)
+      // setStoreImages(file)
 
       setResults(null)
       const reader = new FileReader()
@@ -91,8 +90,8 @@ function ImageEvaluation() {
         {/* Right Sidebar */}
         <VStack align="stretch" gap={6} mt={16}>
           <Box p={4} borderWidth="1px" rounded="xl" bg="white" boxShadow="sm">
-            <Heading 
-              size="md" 
+            <Heading
+              size="md"
               mb={2}
               color={image ? "inherit" : "gray.400"}
               transition="color 0.2s ease-in-out"
@@ -145,7 +144,7 @@ function ImageUploadBox({
   image,
   onUpload,
   onRemove,
-  mt,
+  // mt,
   h,
   isAnalyzing,
 }: {
@@ -157,7 +156,7 @@ function ImageUploadBox({
   h?: string
   isAnalyzing?: boolean
 }) {
-  const [isLoading, setIsLoading] = useState(false)
+  const [_, setIsLoading] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,10 +195,10 @@ function ImageUploadBox({
           borderColor={isAnalyzing ? "black" : "transparent"}
           _hover={{
             border: "1px solid",
-            borderColor: "brand.300"
+            borderColor: "brand.300",
           }}
         >
-          <Text 
+          <Text
             position="absolute"
             top={2}
             left={2}
@@ -214,7 +213,13 @@ function ImageUploadBox({
           >
             {label}
           </Text>
-          <Box position="relative" h={h || "180px"} display="flex" alignItems="center" justifyContent="center">
+          <Box
+            position="relative"
+            h={h || "180px"}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
             <Image
               src={image}
               alt={label}
@@ -245,7 +250,7 @@ function ImageUploadBox({
                   bg="red.500"
                   boxShadow="0 0 10px rgba(255, 0, 0, 0.5)"
                   style={{
-                    animation: "scanVertical 1.25s linear infinite alternate"
+                    animation: "scanVertical 1.25s linear infinite alternate",
                   }}
                 />
                 <Box
@@ -256,7 +261,7 @@ function ImageUploadBox({
                   bg="red.500"
                   boxShadow="0 0 10px rgba(255, 0, 0, 0.5)"
                   style={{
-                    animation: "scanHorizontal 1.25s linear infinite alternate"
+                    animation: "scanHorizontal 1.25s linear infinite alternate",
                   }}
                 />
               </>
@@ -292,12 +297,13 @@ function ImageUploadBox({
             height: "400px",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "var(--chakra-colors-brand-300)";
-            e.currentTarget.style.backgroundColor = "var(--chakra-colors-gray-50)";
+            e.currentTarget.style.borderColor = "var(--chakra-colors-brand-300)"
+            e.currentTarget.style.backgroundColor =
+              "var(--chakra-colors-gray-50)"
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "var(--chakra-colors-gray-200)";
-            e.currentTarget.style.backgroundColor = "transparent";
+            e.currentTarget.style.borderColor = "var(--chakra-colors-gray-200)"
+            e.currentTarget.style.backgroundColor = "transparent"
           }}
         >
           <Text fontSize="4xl" color="gray.400">

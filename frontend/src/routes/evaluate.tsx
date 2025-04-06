@@ -1,3 +1,4 @@
+import { ClassificationService } from "@/client"
 import {
   Box,
   Button,
@@ -12,7 +13,6 @@ import {
 } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
-import {ClassificationService} from "@/client"
 
 type EvaluationResults = {
   diagnosis: string
@@ -29,28 +29,30 @@ export const Route = createFileRoute("/evaluate")({
 
 function ImageEvaluation() {
   const [images, setImages] = useState<(string | null)[]>(Array(4).fill(null))
-  const [storeImages, setStoreImages] = useState<File[]>([]);
+  const [storeImages, setStoreImages] = useState<File[]>([])
   const [isEvaluating, setIsEvaluating] = useState(false)
   // const [results, setResults] = useState<EvaluationResults | null>(null)
-  const [results, setResults] = useState<EvaluationResults[]>([]);
+  const [results, setResults] = useState<EvaluationResults[]>([])
   // const storeImages = []
 
-  const handleImageUpload = async(
+  const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
     console.log("hijjj")
     const file = e.target.files?.[0]
     if (file) {
-      const x = await ClassificationService.classifyBreastImage( {formData: {file:file}} )
+      const x = await ClassificationService.classifyBreastImage({
+        formData: { file: file },
+      })
       console.log(x)
       // console.log(file)
-      
-      setStoreImages(prevImages => {
-        const newImages = [...prevImages];  // Copy the previous state
-        newImages[index] = file;           // Replace the image at the specified index
-        return newImages;                  // Return the updated array
-      });
+
+      setStoreImages((prevImages) => {
+        const newImages = [...prevImages] // Copy the previous state
+        newImages[index] = file // Replace the image at the specified index
+        return newImages // Return the updated array
+      })
 
       const reader = new FileReader()
       reader.onloadend = () => {
@@ -80,26 +82,28 @@ function ImageEvaluation() {
     //   // console.log(images)
     //   console.log( await ClassificationService.classifyImage( {formData: {file: storeImages[index]}} ) )
     // ))}
-///////
-    const evaluationResults: EvaluationResults[] = []; // Make sure the type is correct
+    ///////
+    const evaluationResults: EvaluationResults[] = [] // Make sure the type is correct
 
     // Loop over storeImages and classify each one
     for (const file of storeImages) {
-      const result = await ClassificationService.classifyImage({ formData: { file } });
+      const result = await ClassificationService.classifyBreastImage({
+        formData: { file },
+      })
 
       // Assuming `result` matches the shape of `EvaluationResults`
       const formattedResult: EvaluationResults = {
         diagnosis: result.diagnosis || "Normal", // Add defaults if necessary
         confidence: result.confidence || 0.95,
         // recommendations: result.recommendations || "Regular follow-up recommended",
-      };
+      }
 
-      evaluationResults.push(formattedResult); // Add the formatted result
+      evaluationResults.push(formattedResult) // Add the formatted result
     }
 
     // Update the `results` state with the populated evaluationResults
-    setResults(evaluationResults);
-////////
+    setResults(evaluationResults)
+    ////////
     setIsEvaluating(false)
   }
 
@@ -108,17 +112,17 @@ function ImageEvaluation() {
   const getLabel = (index: number) => {
     switch (index) {
       case 0:
-        return "Left Mediolateral Oblique (MLO)";
+        return "Left Mediolateral Oblique (MLO)"
       case 1:
-        return "Right Mediolateral Oblique (MLO)";
+        return "Right Mediolateral Oblique (MLO)"
       case 2:
-        return "Left Craniocaudal (CC)";
+        return "Left Craniocaudal (CC)"
       case 3:
-        return "Right Craniocaudal (CC)";
+        return "Right Craniocaudal (CC)"
       default:
-        return "Unknown View";
+        return "Unknown View"
     }
-  };
+  }
 
   return (
     <Box p={8}>
@@ -168,8 +172,8 @@ function ImageEvaluation() {
         {/* Right Sidebar */}
         <VStack align="stretch" gap={6} mt={16}>
           <Box p={4} borderWidth="1px" rounded="xl" bg="white" boxShadow="sm">
-            <Heading 
-              size="md" 
+            <Heading
+              size="md"
               mb={2}
               color={allImagesUploaded ? "inherit" : "gray.400"}
               transition="color 0.2s ease-in-out"
@@ -200,7 +204,7 @@ function ImageEvaluation() {
                 Analysis Results
               </Heading>
               {results.map((result, index) => (
-                <Box key={index} mb={4}>       
+                <Box key={index} mb={4}>
                   <Text>
                     <strong>{getLabel(index)}:</strong>
                   </Text>
@@ -208,16 +212,16 @@ function ImageEvaluation() {
                     <strong>Diagnosis:</strong> {result.diagnosis}
                   </Text>
                   <Text>
-                    <strong>Confidence:</strong> {(result.confidence * 100).toFixed(2)}%
+                    <strong>Confidence:</strong>{" "}
+                    {(result.confidence * 100).toFixed(2)}%
                   </Text>
                   <Text>
                     {/* <strong>Recommendations:</strong> {result.recommendations} */}
                   </Text>
                 </Box>
-            ))}
-  </Box>
-)}
-
+              ))}
+            </Box>
+          )}
         </VStack>
       </Grid>
     </Box>
@@ -303,16 +307,16 @@ function ImageUploadBox({
           boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
           _hover={{
             border: "1px solid",
-            borderColor: "brand.300"
+            borderColor: "brand.300",
           }}
         >
-          <Text 
-            position="absolute" 
-            top={2} 
-            left={2} 
-            bg="white" 
-            px={2} 
-            py={1} 
+          <Text
+            position="absolute"
+            top={2}
+            left={2}
+            bg="white"
+            px={2}
+            py={1}
             rounded="md"
             fontSize="sm"
             fontWeight="medium"
@@ -323,8 +327,8 @@ function ImageUploadBox({
           >
             {label}
           </Text>
-          <Box 
-            onClick={() => setIsPopupOpen(true)} 
+          <Box
+            onClick={() => setIsPopupOpen(true)}
             cursor="pointer"
             role="group"
           >
@@ -337,10 +341,10 @@ function ImageUploadBox({
                 left={0}
               />
             )}
-            <Image 
-              src={image} 
-              alt={label} 
-              w="full" 
+            <Image
+              src={image}
+              alt={label}
+              w="full"
               h="180px"
               objectFit="contain"
               bg="gray.50"
@@ -397,10 +401,15 @@ function ImageUploadBox({
                 >
                   ×
                 </Button>
-                <Box flex={1} display="flex" alignItems="center" justifyContent="center">
-                  <Image 
-                    src={image} 
-                    alt={label} 
+                <Box
+                  flex={1}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Image
+                    src={image}
+                    alt={label}
                     maxH="full"
                     maxW="full"
                     objectFit="contain"
@@ -425,14 +434,15 @@ function ImageUploadBox({
           border="1px solid"
           borderColor="gray.200"
           bg="white"
-          _hover={{ 
+          _hover={{
             bg: "brand.50",
             borderColor: "brand.300",
             transform: "scale(1.02)",
-            boxShadow: "0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06)"
+            boxShadow:
+              "0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06)",
           }}
         >
-          <Text 
+          <Text
             position="absolute"
             top={2}
             left={2}
@@ -448,10 +458,7 @@ function ImageUploadBox({
             onChange={handleUpload}
           />
           {isLoading ? (
-            <Skeleton
-              height="180px"
-              width="full"
-            />
+            <Skeleton height="180px" width="full" />
           ) : (
             <>
               <Text color="gray.400" fontSize="2xl">
