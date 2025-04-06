@@ -15,6 +15,7 @@ jobs:
       - production
     environment:
       name: Production
+      url: "https://dashboard.guacamolerigatoni.com/evaluate"
     env:
       ENVIRONMENT: production
       DOMAIN: ${{ secrets.DOMAIN_PRODUCTION }}
@@ -28,6 +29,8 @@ jobs:
       EMAILS_FROM_EMAIL: ${{ secrets.EMAILS_FROM_EMAIL }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
+      BACKEND_CORS_ORIGINS: ${{ secrets.BACKEND_CORS_ORIGINS }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
