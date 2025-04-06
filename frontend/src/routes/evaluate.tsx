@@ -105,6 +105,21 @@ function ImageEvaluation() {
 
   const allImagesUploaded = images.every((img) => img !== null)
 
+  const getLabel = (index: number) => {
+    switch (index) {
+      case 0:
+        return "Left Mediolateral Oblique (MLO)";
+      case 1:
+        return "Right Mediolateral Oblique (MLO)";
+      case 2:
+        return "Left Craniocaudal (CC)";
+      case 3:
+        return "Right Craniocaudal (CC)";
+      default:
+        return "Unknown View";
+    }
+  };
+
   return (
     <Box p={8}>
       <Grid templateColumns={{ base: "1fr", lg: "2fr 1fr" }} gap={8}>
@@ -185,9 +200,9 @@ function ImageEvaluation() {
                 Analysis Results
               </Heading>
               {results.map((result, index) => (
-                <Box key={index} mb={4}>
+                <Box key={index} mb={4}>       
                   <Text>
-                    <strong>Xray Scan:</strong>{index}
+                    <strong>{getLabel(index)}:</strong>
                   </Text>
                   <Text>
                     <strong>Diagnosis:</strong> {result.diagnosis}
