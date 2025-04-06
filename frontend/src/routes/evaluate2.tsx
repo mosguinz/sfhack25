@@ -10,8 +10,9 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, Link as RouterLink } from "@tanstack/react-router"
 import { useState } from "react"
+import { ClassificationService } from "@/client" 
 
 type EvaluationResults = {
   diagnosis: string
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/evaluate2")({
 
 function ImageEvaluation() {
   const [image, setImage] = useState<string | null>(null)
-  // const [storeImages, setStoreImages] = useState<File>()
+  const [storeImages, setStoreImages] = useState<File | null>(null);
   const [isEvaluating, setIsEvaluating] = useState(false)
   const [results, setResults] = useState<EvaluationResults | null>(null)
   // const [results, setResults] = useState<EvaluationResults[]>([]);
@@ -36,7 +37,7 @@ function ImageEvaluation() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      // setStoreImages(file)
+      setStoreImages(file)
 
       setResults(null)
       const reader = new FileReader()
@@ -55,14 +56,31 @@ function ImageEvaluation() {
   const handleEvaluate = async () => {
     setIsEvaluating(true)
     setResults(null)
-    setTimeout(() => {
+
+    if (storeImages) {
+      const result = await ClassificationService.classifyChestImage({ formData: { file: storeImages } });
+      console.log(result);
+      console.log(storeImages)
+
       setResults({
-        diagnosis: "Normal",
-        confidence: 0.95,
+        diagnosis: result.diagnosis,
+        confidence: result.confidence,
         // recommendations: "Regular follow-up recommended",
       })
-      setIsEvaluating(false)
+
+    }
+
+    setTimeout(() => {
+    //   setResults({
+    //     diagnosis: "Normal",
+    //     confidence: 0.95,
+    //     // recommendations: "Regular follow-up recommended",
+    //   })
+    //   setIsEvaluating(false)
     }, 2500)
+
+    setIsEvaluating(false)
+
   }
 
   return (
@@ -73,6 +91,11 @@ function ImageEvaluation() {
           <Heading size="3xl" mb={4}>
             Chest X-ray Analyzer
           </Heading>
+
+          <RouterLink to="/evaluate" className="main-link">
+            Mammography Analyzer
+          </RouterLink>
+
           <Box h="1px" bg="gray.200" mb={4} />
           <Box mt={2}>
             <ImageUploadBox

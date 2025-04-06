@@ -11,7 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, Link as RouterLink } from "@tanstack/react-router"
 import { useState } from "react"
 
 type EvaluationResults = {
@@ -132,6 +132,14 @@ function ImageEvaluation() {
           <Heading size="3xl" mb={4}>
             Mammography Analyzer
           </Heading>
+
+          {/* <Button variant="solid" type="submit">
+            Go to Chest Scans{" "} */}
+            <RouterLink to="/evaluate2" className="main-link">
+              Chest X-ray Analyzer
+            </RouterLink>
+          {/* </Button> */}
+
           <Box h="1px" bg="gray.200" mb={4} />
           <Box mt={2}>
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={12}>
