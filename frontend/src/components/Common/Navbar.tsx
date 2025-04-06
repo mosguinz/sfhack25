@@ -20,7 +20,7 @@ function Navbar() {
       p={4}
     >
       <Link to="/">
-        <Image src={Logo} alt="Logo" maxW="3xs" p={2} />
+        <Image src={Logo} alt="Logo" maxW="8xs" maxH="2xs" p={2} />
       </Link>
       <Flex gap={2} alignItems="center">
         <UserMenu />
