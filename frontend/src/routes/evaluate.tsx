@@ -42,7 +42,7 @@ function ImageEvaluation() {
     console.log("hijjj")
     const file = e.target.files?.[0]
     if (file) {
-      const x = await ClassificationService.classifyImage( {formData: {file:file}} )
+      const x = await ClassificationService.classifyBreastImage( {formData: {file:file}} )
       console.log(x)
       // console.log(file)
       
