@@ -58,7 +58,7 @@ function ImageEvaluation() {
     setResults(null)
 
     if (storeImages) {
-      const result = await ClassificationService.classify_brain_image({
+      const result = await ClassificationService.classifyBrainImage({
         formData: { file: storeImages },
       })
       console.log(result)
