@@ -8,48 +8,50 @@ import type {
   ClassificationClassifyBreastImageResponse,
   ClassificationClassifyChestImageData,
   ClassificationClassifyChestImageResponse,
-  ItemsCreateItemData,
-  ItemsCreateItemResponse,
-  ItemsDeleteItemData,
-  ItemsDeleteItemResponse,
-  ItemsReadItemData,
-  ItemsReadItemResponse,
+  ClassificationClassifyBrainImageData,
+  ClassificationClassifyBrainImageResponse,
   ItemsReadItemsData,
   ItemsReadItemsResponse,
+  ItemsCreateItemData,
+  ItemsCreateItemResponse,
+  ItemsReadItemData,
+  ItemsReadItemResponse,
   ItemsUpdateItemData,
   ItemsUpdateItemResponse,
+  ItemsDeleteItemData,
+  ItemsDeleteItemResponse,
   LoginLoginAccessTokenData,
   LoginLoginAccessTokenResponse,
+  LoginTestTokenResponse,
   LoginRecoverPasswordData,
-  LoginRecoverPasswordHtmlContentData,
-  LoginRecoverPasswordHtmlContentResponse,
   LoginRecoverPasswordResponse,
   LoginResetPasswordData,
   LoginResetPasswordResponse,
-  LoginTestTokenResponse,
+  LoginRecoverPasswordHtmlContentData,
+  LoginRecoverPasswordHtmlContentResponse,
   PrivateCreateUserData,
   PrivateCreateUserResponse,
-  UsersCreateUserData,
-  UsersCreateUserResponse,
-  UsersDeleteUserData,
-  UsersDeleteUserMeResponse,
-  UsersDeleteUserResponse,
-  UsersReadUserByIdData,
-  UsersReadUserByIdResponse,
-  UsersReadUserMeResponse,
   UsersReadUsersData,
   UsersReadUsersResponse,
-  UsersRegisterUserData,
-  UsersRegisterUserResponse,
-  UsersUpdatePasswordMeData,
-  UsersUpdatePasswordMeResponse,
-  UsersUpdateUserData,
+  UsersCreateUserData,
+  UsersCreateUserResponse,
+  UsersReadUserMeResponse,
+  UsersDeleteUserMeResponse,
   UsersUpdateUserMeData,
   UsersUpdateUserMeResponse,
+  UsersUpdatePasswordMeData,
+  UsersUpdatePasswordMeResponse,
+  UsersRegisterUserData,
+  UsersRegisterUserResponse,
+  UsersReadUserByIdData,
+  UsersReadUserByIdResponse,
+  UsersUpdateUserData,
   UsersUpdateUserResponse,
-  UtilsHealthCheckResponse,
+  UsersDeleteUserData,
+  UsersDeleteUserResponse,
   UtilsTestEmailData,
   UtilsTestEmailResponse,
+  UtilsHealthCheckResponse,
 } from "./types.gen"
 
 export class ClassificationService {
@@ -89,6 +91,28 @@ export class ClassificationService {
     return __request(OpenAPI, {
       method: "POST",
       url: "/api/v1/classify/chest",
+      formData: data.formData,
+      mediaType: "multipart/form-data",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Classify Brain Image
+   * Upload an image to classify breast cancer type.
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns ClassificationResult Successful Response
+   * @throws ApiError
+   */
+  public static classifyBrainImage(
+    data: ClassificationClassifyBrainImageData,
+  ): CancelablePromise<ClassificationClassifyBrainImageResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/classify/brain",
       formData: data.formData,
       mediaType: "multipart/form-data",
       errors: {
