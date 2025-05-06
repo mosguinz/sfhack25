@@ -45,7 +45,7 @@ cnn_data_transform_pipeline = transforms.Compose(
 
 brain_model = DenseCNN()
 checkpoint = torch.load("app/classifier/BRAIN_TUMOR_BEST.pth", map_location=torch.device("cpu"))
-chest_model.load_state_dict(
+brain_model.load_state_dict(
     checkpoint['model_state_dict']
 )
 dense_cnn_transform_pipeline = transforms.Compose([
