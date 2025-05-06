@@ -1,12 +1,10 @@
 from PIL import Image, ImageFilter
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
-import sys
 
 class Preprocessor:
     def __init__(
-        self, 
+        self,
         gauss_std_radius: int = 1, # Gaussian blur size
         deblur_strength: float = 0.5, # Deblur strength [0.5 is standard]
         laplacian_ksize: int = 3, # Laplacian kernel size
@@ -24,22 +22,7 @@ class Preprocessor:
         # Clamp values between 0 and 255 & convert to 8 bit (0-255)
         arr = np.clip(arr, 0, 255).astype(np.uint8);
         self.visualization_steps.append((arr, title));
-    
-    def debug_steps(self, title: str = ""):
-        num_steps = len(self.visualization_steps);
-        plt.figure(figsize=(4 * num_steps, 4));
-        plt.axis("off");
-        plt.title(title + "\n");
 
-        # Augment images side-by-side in a figure
-        for i, (img, title) in enumerate(self.visualization_steps):
-            plt.subplot(1, num_steps, i + 1);
-            plt.imshow(img);
-            plt.title(title);
-            plt.axis("off");
-
-        plt.tight_layout();
-        plt.show();
 
     def __call__(self, img: Image.Image):
         self.__collect_np_image(np.array(img), "Original Image");
@@ -77,7 +60,7 @@ class Preprocessor:
             if lap.max() != 0:
                 lap = lap / lap.max();  # Normalize to [0, 1]
             laplacian[:, :, i] = lap;
-        
+
         # INT operator (sigmoid variant); boost edges a tad bit; values are already fine-tuned
         laplacian = np.clip(laplacian, 0, 1); # Clamp values between 0 and 1
 
