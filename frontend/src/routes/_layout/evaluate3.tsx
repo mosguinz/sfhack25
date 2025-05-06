@@ -89,17 +89,13 @@ function ImageEvaluation() {
         {/* Main Upload Section */}
         <Box>
           <Heading size="3xl" mb={4}>
-            Chest X-ray Analyzer
+            Brain Scan Analyzer
           </Heading>
-
-          <RouterLink to="/evaluate" className="main-link">
-            Mammography Analyzer
-          </RouterLink>
 
           <Box h="1px" bg="gray.200" mb={4} />
           <Box mt={2}>
             <ImageUploadBox
-              label="Chest X-ray"
+              label="Brain Scan"
               image={image}
               onUpload={handleImageUpload}
               onRemove={removeImage}
@@ -307,7 +303,7 @@ function ImageUploadBox({
             +
           </Text>
           <Text color="gray.500" fontSize="sm" mt={2}>
-            Click to upload chest X-ray image
+            Click to upload Brain Scan Image
           </Text>
           <Input
             type="file"
