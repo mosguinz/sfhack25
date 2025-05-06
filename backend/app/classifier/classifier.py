@@ -44,18 +44,19 @@ cnn_data_transform_pipeline = transforms.Compose(
 )
 
 brain_model = DenseCNN()
+checkpoint = torch.load("app/classifier/BRAIN_TUMOR_BEST.pth", map_location=torch.device("cpu"))
 chest_model.load_state_dict(
-    torch.load("app/classifier/BRAIN_TUMOR_BEST.pth", map_location=torch.device("cpu"))
+    checkpoint['model_state_dict']
 )
 dense_cnn_transform_pipeline = transforms.Compose([
-        transforms.Resize((224, 224)),
-        Preprocessor(),
-        transforms.ToTensor(),
-        transforms.Normalize(
-            mean=[0.485, 0.456, 0.406], # ImageNet mean
-            std=[0.229, 0.224, 0.225] # ImageNet std
-        )
-    ]);
+    transforms.Resize((224, 224)),
+    Preprocessor(),
+    transforms.ToTensor(),
+    transforms.Normalize(
+        mean=[0.485, 0.456, 0.406], # ImageNet mean
+        std=[0.229, 0.224, 0.225] # ImageNet std
+    )
+]);
 
 def interpret_prediction(tensor: torch.Tensor, model_type: str) -> tuple[str, float]:
     probs = tensor.squeeze()
