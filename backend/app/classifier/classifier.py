@@ -44,6 +44,9 @@ cnn_data_transform_pipeline = transforms.Compose(
 )
 
 brain_model = DenseCNN()
+chest_model.load_state_dict(
+    torch.load("app/classifier/BRAIN_TUMOR_BEST.pth", map_location=torch.device("cpu"))
+)
 dense_cnn_transform_pipeline = transforms.Compose([
         transforms.Resize((224, 224)),
         Preprocessor(),
